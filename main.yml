@@ -6,3 +6,4 @@
 - include: core_switches.yml
 - include: access_switches.yml
 - include: routers.yml
+- include: show.yml
