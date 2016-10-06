@@ -15,7 +15,7 @@
 
 
   vars_prompt:
-  - name: "specific_config_mode"
+  - name: "specific_config_mode" # example: router eigrp 1, line vty 0 4, interface fa0/0, ip access-list standard test, etc..
     prompt: "config_mode"
     private: no
   - name: "command1"
