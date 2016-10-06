@@ -1,0 +1,16 @@
+---
+vlans:
+  - { vlan_id: 11, name: voice1}  
+  - { vlan_id: 12, name: voice2}
+  - { vlan_id: 13, name: voice3}  
+  - { vlan_id: 14, name: voice4} 
+  - { vlan_id: 51, name: data1}  
+  - { vlan_id: 52, name: data2}
+  - { vlan_id: 53, name: data3}  
+  - { vlan_id: 54, name: data4}
+
+trunk_ports:
+ - Ethernet0/0
+ - Ethernet0/1
+ - Ethernet0/2
+ - Ethernet0/3

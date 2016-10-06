@@ -1,0 +1,10 @@
+---
+hsrp_vip:
+ - { interface: vlan 11, vip: 192.168.11.254, hello: 250, dead: 750 }
+ - { interface: vlan 12, vip: 192.168.12.254, hello: 250, dead: 750 }
+ - { interface: vlan 13, vip: 192.168.13.254, hello: 250, dead: 750 }
+ - { interface: vlan 14, vip: 192.168.14.254, hello: 250, dead: 750 }
+ - { interface: vlan 51, vip: 192.168.51.254, hello: 250, dead: 750 }
+ - { interface: vlan 52, vip: 192.168.52.254, hello: 250, dead: 750 } 
+ - { interface: vlan 53, vip: 192.168.53.254, hello: 250, dead: 750 }
+ - { interface: vlan 54, vip: 192.168.54.254, hello: 250, dead: 750 }
