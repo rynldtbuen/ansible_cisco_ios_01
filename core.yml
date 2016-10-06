@@ -12,7 +12,7 @@
       lines: hostname "{{ inventory_hostname }}"
     tags: hostname
 
-# Layer 2 interfaces
+# layer 2 interfaces
   - name: create vlans
     ios_config:
       provider: "{{ provider }}"
@@ -33,7 +33,10 @@
     with_items: "{{ trunk_ports }}"
     tags: trunk
 
-  - name: spanning root brige
+# this is just a failed safe, whenever the topology changes and need to use spanning-tree
+# set which core switch will be the root or secondary, this will match the hsrp active.
+# example: if the core_sw_01 will be the active router for VLAN10, it will be also the root bridge for VLAN10.
+- name: spanning root brige
     ios_config:
       provider: "{{ provider }}"
       lines:
@@ -42,7 +45,7 @@
     with_items: "{{ root_bri }}"
     tags: bridge
 
-# Layer 3 interfaces
+# layer 3 interfaces
   - name: switch virtual interface
     ios_config:
       provider: "{{ provider }}"
@@ -84,7 +87,7 @@
     - "{{ vlan_svi }}"
     tags: routing
 
-# HSRP
+# Hot Standby Router Protocol (HSRP) configuration
   - name: hsrp
     ios_config:
       provider: "{{ provider }}"
@@ -96,7 +99,8 @@
     with_items: "{{ hsrp_vip }}"
     tags: hsrp
   
-  - name: hsrp active
+# set which router will be the active or standby
+- name: hsrp active
     ios_config:
       provider: "{{ provider }}"
       lines:
@@ -107,6 +111,7 @@
     with_items: "{{ hsrp_active }}"
     tags: active
 
+# up all the interfaces (optional). This is just to make all the interfaces are up
   - name: no shutdown
     ios_config:
       provider: "{{ provider }}"
