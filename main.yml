@@ -1,0 +1,8 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+ 
+- include: core_switches.yml
+- include: access_switches.yml
+- include: routers.yml

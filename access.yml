@@ -1,0 +1,70 @@
+---
+- name: core switch configurations
+  hosts: access
+  gather_facts: no
+  connection: local
+
+  tasks:
+
+
+  - name: set hostname
+    ios_config:
+      provider: "{{ provider }}"
+      lines: hostname "{{ inventory_hostname }}"
+    tags: hostname
+
+  - name: create vlans
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - name {{ item.name }}
+      parents: vlan {{ item.vlan_id }}
+    with_items: "{{ vlans }}"
+    tags: vlans
+
+  - name: trunk port
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - switchport trunk encap dot1q
+      - switchport mode dynamic desirable
+      - switchport trunk allowed vlan add {{ item[1] }}
+      parents: interface {{ item[0] }}
+    with_nested: 
+    - "{{ trunk_ports }}"
+    - "{{ vlans_allowed }}"
+    tags: trunk
+
+  - name: access ports
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - switchport mode access 
+      - switchport voice vlan {{ item[0] }}
+      - switchport access vlan {{ item[1] }}
+      parents: interface {{ item[2] }}
+    with_nested:
+    - "{{ voice_vlan }}"
+    - "{{ data_vlan }}"
+    - "{{ access_ports }}"
+    tags: allowed
+
+# up all interface (optional)
+  - name: no shutdown
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - no shutdown
+      parents: interface {{ item }}
+    with_items: "{{ trunk_ports }}"
+    tags: noshut
+
+  - name: no shutdown
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - no shutdown
+      parents: interface {{ item }}
+    with_items: "{{ access_ports }}"
+    tags: noshut
+

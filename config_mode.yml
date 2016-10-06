@@ -1,0 +1,43 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+
+
+# enableconfig.wordpress.com
+# simple and convenient playbook to configure specific configuration mode of a router or switch
+
+# use --limit to specifiy which host or group to use in play. Refer to your hostfile
+# example1: ansible-playbook config_mode.yml --limit core
+# example2: ansible-playbook config_mode.yml --limit core_sw_01
+
+# limition maximum of two concurrent commands are allowed each specific configuration mode
+
+
+  vars_prompt:
+  - name: "specific_config_mode"
+    prompt: "config_mode"
+    private: no
+  - name: "command1"
+    prompt: "1st_command"
+    private: no
+    default: !
+  - name: "command2"
+    prompt: "2nd_ command"
+    private: no
+    default: !
+
+  tasks:
+
+  - name: command1
+    ios_config:
+      provider: "{{ provider }}"
+      lines: "{{ command1 }}"
+      parents: "{{ specific_config_mode }}"
+
+  - name: command2
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - "{{ command2 }}"      
+      parents: "{{ specific_config_mode }}"

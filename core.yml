@@ -1,0 +1,136 @@
+---
+- name: core switch configurations
+  hosts: core
+  gather_facts: no
+  connection: local
+
+  tasks:
+
+  - name: set hostname
+    ios_config:
+      provider: "{{ provider }}"
+      lines: hostname "{{ inventory_hostname }}"
+    tags: hostname
+
+# Layer 2 interfaces
+  - name: create vlans
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - name {{ item.name }}
+      parents: vlan {{ item.vlan_id }}
+      match: exact
+    with_items: "{{ vlans }}"
+    tags: vlans
+ 
+  - name: trunk port
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - switchport trunk encap dot1q
+      parents: interface {{ item }}
+      match: exact
+    with_items: "{{ trunk_ports }}"
+    tags: trunk
+
+  - name: spanning root brige
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - spanning-tree vlan {{ item.vlan_id }} root {{ item.root }}
+      match: exact
+    with_items: "{{ root_bri }}"
+    tags: bridge
+
+# Layer 3 interfaces
+  - name: switch virtual interface
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - ip add {{ item.ip }} {{ item.mask }}
+      parents: interface {{ item.interface }}
+      match: exact
+    with_items: "{{ vlan_svi }}"
+    tags: svi
+
+  - name: point-to-point link
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - no switchport
+      - description {{ item.description }}
+      - ip add {{ item.ip }} {{ item.mask }}
+      - ip summary-address eigrp 1 192.168.0.0 255.255.224.0
+      - ip summary-address eigrp 1 192.168.32.0 255.255.224.0
+      parents: interface {{ item.interface }}
+      match: exact
+    with_items: "{{ routed_ports }}"
+    tags: ptp
+
+# Routing configuration
+  - name: routing configuration
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - no auto
+      - network 192.168.0.0 0.0.255.255
+      - network 172.16.0.0 0.0.7.255
+      - passive-interface default
+      - no passive-interface {{ item[0].interface }}
+      - no passive-interface {{ item[1].interface }}
+      parents: router eigrp 1
+    with_nested: 
+    - "{{ routed_ports }}"
+    - "{{ vlan_svi }}"
+    tags: routing
+
+# HSRP
+  - name: hsrp
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - standby 1 ip {{ item.vip }}
+      - standby 1 timer msec {{ item.hello }} msec {{ item.dead }}
+      parents: interface {{ item.interface }}
+      match: exact
+    with_items: "{{ hsrp_vip }}"
+    tags: hsrp
+  
+  - name: hsrp active
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - standby 1 priority {{ item.pri }}
+      - standby 1 preempt delay minimum 30
+      parents: interface {{ item.interface }}
+      match: exact
+    with_items: "{{ hsrp_active }}"
+    tags: active
+
+  - name: no shutdown
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - no shutdown
+      parents: interface {{ item }}
+    with_items: "{{ trunk_ports }}"
+    tags: noshut
+
+# up all interface (optional)
+  - name: no shutdown
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - no shutdown
+      parents: interface {{ item.interface }}
+    with_items: "{{ routed_ports }}"
+    tags: noshut
+
+  - name: no shutdown
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - no shutdown   
+      parents: interface {{ item.interface }}
+    with_items: "{{ vlan_svi }}"
+    tags: noshut

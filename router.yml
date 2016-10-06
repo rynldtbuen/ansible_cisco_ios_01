@@ -1,0 +1,69 @@
+---
+- name: core switch configurations
+  hosts: routers
+  gather_facts: no
+  connection: local
+ 
+  tasks:
+  
+  - name: set hostname
+    ios_config:
+      provider: "{{ provider }}"
+      lines: hostname "{{ inventory_hostname }}"    
+
+  - name: configure interface
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - ip add {{ item.ip }} {{ item.mask }}
+      - ip nat inside
+      - no shut
+      parents: interface {{ item.interface }}
+      match: exact            
+    with_items: "{{ interfaces }}"
+    tags: interface
+
+  - name: configure wan interface
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - ip add dhcp
+      - ip nat outside
+      - no shut
+      parents: interface {{ item }}
+      match: exact            
+    with_items:
+    - Ethernet1/0 
+    tags: wan
+
+  - name: access list to use in nat
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - permit 192.168.0.0 0.0.0.63 log
+      parents: ip access-list standard NAT
+      match: exact
+    tags: acl
+
+  - name: ip nat and default route
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - ip nat inside source list NAT interface e1/3 overload 
+      - ip route 0.0.0.0 0.0.0.0 192.168.91.2
+      match: exact            
+    tags: nat_default
+
+  - name: routing
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - no auto 
+      - network 172.16.0.0 0.0.255.255
+      - passive-interface default
+      - no passive-interface {{ item.interface }}
+      - redistribute static
+      parents: router eigrp 1
+      match: exact            
+    with_items: "{{ interfaces }}"
+    tags: routing

@@ -1,0 +1,28 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+
+
+# enableconfig.wordpress.com
+# simple and convenient playbook that shows the configuration of the devices
+
+# use --limit to specifiy which host or group to use in play. Refer to your hostfile
+# example1: ansible-playbook show.yml --limit core
+# example2: ansible-playbook show.yml --limit core_sw_01
+
+  vars_prompt:
+  - name: "show_command"
+    prompt: "show command"
+    private: no    
+ 
+  tasks:
+
+  - name: show commands
+    ios_command:
+      commands:
+      - "{{ show_command }}"
+      provider: "{{ provider }}"
+    register: show
+   
+  - debug: var=show.stdout_lines
