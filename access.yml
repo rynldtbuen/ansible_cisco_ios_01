@@ -22,7 +22,7 @@
     with_items: "{{ vlans }}"
     tags: vlans
 
-  - name: trunk port
+  - name: set trunk port
     ios_config:
       provider: "{{ provider }}"
       lines:
@@ -35,7 +35,7 @@
     - "{{ vlans_allowed }}"
     tags: trunk
 
-  - name: access ports
+  - name: set access ports
     ios_config:
       provider: "{{ provider }}"
       lines:
@@ -49,7 +49,8 @@
     - "{{ access_ports }}"
     tags: allowed
 
-# up all interface (optional)
+# up all interface (optional). This is just to make sure all the 
+# trunk and access ports are up after the configuration
   - name: no shutdown
     ios_config:
       provider: "{{ provider }}"
