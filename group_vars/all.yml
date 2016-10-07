@@ -1,6 +1,6 @@
 ---
 provider: 
-  host: "{{ inventory_hostname }}"
+  host: "{{ ansible_host }}"
   username: rey
   password: cisco
   transport: cli
