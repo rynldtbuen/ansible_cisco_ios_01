@@ -3,22 +3,21 @@
   gather_facts: no
   connection: local
 
-
 # enableconfig.wordpress.com
-# simple and convenient playbook to configure specific configuration mode of a router or switch
+# simple and convenient playbook to configure specific configuration mode of a router or switch.
 
-# use --limit to specifiy which host or group to use in play. Refer to your hostfile
+# use --limit to specifiy which host or group to use in play. Refer to your hostfile.
 # example1: ansible-playbook config_mode.yml --limit core
 # example2: ansible-playbook config_mode.yml --limit core_sw_01
 
-# limition maximum of two concurrent commands are allowed each specific configuration mode
-
+# limition maximum of two concurrent commands are allowed each specific configuration mode.
+# any suggestion to improve this playbook, which basically can send command more than two, that would be great.
 
   vars_prompt:
   - name: "specific_config_mode" # example: router eigrp 1, line vty 0 4, interface fa0/0, ip access-list standard test, etc..
-    prompt: "config_mode"
+    prompt: "config_mode" # 
     private: no
-  - name: "command1"
+  - name: "command1" # example under interface level: no shut, ip add, switchport mode acc, etc..
     prompt: "1st_command"
     private: no
     default: !
