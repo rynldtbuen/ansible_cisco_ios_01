@@ -14,3 +14,8 @@ trunk_ports:
  - Ethernet0/1
  - Ethernet0/2
  - Ethernet0/3
+
+access_ports:
+ - Ethernet1/0
+ - Ethernet1/1
+ - Ethernet1/2
