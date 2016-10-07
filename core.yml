@@ -9,10 +9,10 @@
   - name: set hostname
     ios_config:
       provider: "{{ provider }}"
-      lines: hostname "{{ inventory_hostname }}"
+      lines: hostname "{{ ansible_hostname }}"
     tags: hostname
 
-# layer 2 interfaces
+# Layer 2 interfaces
   - name: create vlans
     ios_config:
       provider: "{{ provider }}"
@@ -33,10 +33,7 @@
     with_items: "{{ trunk_ports }}"
     tags: trunk
 
-# this is just a failed safe, whenever the topology changes and need to use spanning-tree
-# set which core switch will be the root or secondary, this will match the hsrp active.
-# example: if the core_sw_01 will be the active router for VLAN10, it will be also the root bridge for VLAN10.
-- name: spanning root brige
+  - name: spanning root brige
     ios_config:
       provider: "{{ provider }}"
       lines:
@@ -45,15 +42,17 @@
     with_items: "{{ root_bri }}"
     tags: bridge
 
-# layer 3 interfaces
+# Layer 3 interfaces
   - name: switch virtual interface
     ios_config:
       provider: "{{ provider }}"
       lines:
-      - ip add {{ item.ip }} {{ item.mask }}
-      parents: interface {{ item.interface }}
+      - ip add {{ item[1].ip }} {{ item[1].mask }}
+      parents: interface {{ item[0] }}
       match: exact
-    with_items: "{{ vlan_svi }}"
+    with_together: 
+    - "{{ svi_int }}"
+    - "{{ svi_add }}"
     tags: svi
 
   - name: point-to-point link
@@ -61,13 +60,15 @@
       provider: "{{ provider }}"
       lines:
       - no switchport
-      - description {{ item.description }}
-      - ip add {{ item.ip }} {{ item.mask }}
+      - description {{ item[1].description }}
+      - ip add {{ item[1].ip }} {{ item[1].mask }}
       - ip summary-address eigrp 1 192.168.0.0 255.255.224.0
       - ip summary-address eigrp 1 192.168.32.0 255.255.224.0
-      parents: interface {{ item.interface }}
+      parents: interface {{ item[0]}}
       match: exact
-    with_items: "{{ routed_ports }}"
+    with_together: 
+    - "{{ routed_ports }}"
+    - "{{ routed_ports_add }}"
     tags: ptp
 
 # Routing configuration
@@ -79,28 +80,29 @@
       - network 192.168.0.0 0.0.255.255
       - network 172.16.0.0 0.0.7.255
       - passive-interface default
-      - no passive-interface {{ item[0].interface }}
-      - no passive-interface {{ item[1].interface }}
+      - no passive-interface {{ item[0] }}
+      - no passive-interface {{ item[1] }}
       parents: router eigrp 1
     with_nested: 
     - "{{ routed_ports }}"
-    - "{{ vlan_svi }}"
+    - "{{ svi_int }}"
     tags: routing
 
-# Hot Standby Router Protocol (HSRP) configuration
+# HSRP
   - name: hsrp
     ios_config:
       provider: "{{ provider }}"
       lines:
-      - standby 1 ip {{ item.vip }}
-      - standby 1 timer msec {{ item.hello }} msec {{ item.dead }}
-      parents: interface {{ item.interface }}
+      - standby 1 ip {{ item[1].vip }}
+      - standby 1 timer msec {{ item[1].hello }} msec {{ item[1].dead }}
+      parents: interface {{ item[0] }}
       match: exact
-    with_items: "{{ hsrp_vip }}"
+    with_together: 
+    - "{{ svi_int }}"
+    - "{{ hsrp_vip }}"
     tags: hsrp
   
-# set which router will be the active or standby
-- name: hsrp active
+  - name: hsrp active
     ios_config:
       provider: "{{ provider }}"
       lines:
@@ -111,7 +113,6 @@
     with_items: "{{ hsrp_active }}"
     tags: active
 
-# up all the interfaces (optional). This is just to make all the interfaces are up
   - name: no shutdown
     ios_config:
       provider: "{{ provider }}"
