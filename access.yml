@@ -1,5 +1,5 @@
 ---
-- name: core switch configurations
+- name: access switch configurations
   hosts: access
   gather_facts: no
   connection: local
@@ -22,8 +22,7 @@
     with_items: "{{ vlans }}"
     tags: vlans
 
-# set trunks port and allow only required VLAN
-  - name: set trunk port
+  - name: trunk port
     ios_config:
       provider: "{{ provider }}"
       lines:
@@ -36,8 +35,7 @@
     - "{{ vlans_allowed }}"
     tags: trunk
 
-# set access ports and assign to to specific vlan
-- name: set access ports
+  - name: access ports
     ios_config:
       provider: "{{ provider }}"
       lines:
@@ -51,8 +49,7 @@
     - "{{ access_ports }}"
     tags: allowed
 
-# up all interface (optional). This is just to make sure all the 
-# trunk and access ports are up after the configuration
+# up all interface (optional)
   - name: no shutdown
     ios_config:
       provider: "{{ provider }}"
@@ -70,4 +67,3 @@
       parents: interface {{ item }}
     with_items: "{{ access_ports }}"
     tags: noshut
-
