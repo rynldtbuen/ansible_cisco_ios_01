@@ -1,18 +1,17 @@
----
-vlan_svi:
-  - { interface: vlan11, ip: 192.168.11.252, mask: 255.255.255.0 }
-  - { interface: vlan12, ip: 192.168.12.252, mask: 255.255.255.0 }
-  - { interface: vlan13, ip: 192.168.13.252, mask: 255.255.255.0 }
-  - { interface: vlan14, ip: 192.168.14.252, mask: 255.255.255.0 }
-  - { interface: vlan51, ip: 192.168.51.252, mask: 255.255.255.0 }
-  - { interface: vlan52, ip: 192.168.52.252, mask: 255.255.255.0 }
-  - { interface: vlan53, ip: 192.168.53.252, mask: 255.255.255.0 }
-  - { interface: vlan54, ip: 192.168.54.252, mask: 255.255.255.0 }
+svi_add:
+  - { ip: 192.168.11.252, mask: 255.255.255.0 }
+  - { ip: 192.168.12.252, mask: 255.255.255.0 }
+  - { ip: 192.168.13.252, mask: 255.255.255.0 }
+  - { ip: 192.168.14.252, mask: 255.255.255.0 }
+  - { ip: 192.168.51.252, mask: 255.255.255.0 }
+  - { ip: 192.168.52.252, mask: 255.255.255.0 }
+  - { ip: 192.168.53.252, mask: 255.255.255.0 }
+  - { ip: 192.168.54.252, mask: 255.255.255.0 }
 
-routed_ports:
-  - { interface: Ethernet1/0, description: --> core_sw_02, ip: 172.16.0.1, mask: 255.255.255.0 }
-  - { interface: Ethernet1/1, description: --> rtr_01, ip: 172.16.1.1, mask: 255.255.255.0 }
-  - { interface: Ethernet1/2, description: --> rtr-02, ip: 172.16.2.1, mask: 255.255.255.0 }
+routed_ports_add:
+  - { description: --> core_sw_02, ip: 172.16.0.1, mask: 255.255.255.0 }
+  - { description: --> rtr_01, ip: 172.16.1.1, mask: 255.255.255.0 }
+  - { description: --> rtr-02, ip: 172.16.2.1, mask: 255.255.255.0 }
 
 root_bri:
  - { vlan_id: 11, root: primary }
@@ -29,4 +28,3 @@ hsrp_active:
  - { interface: vlan12, pri: 110 }
  - { interface: vlan13, pri: 110 }
  - { interface: vlan14, pri: 110 }
-
