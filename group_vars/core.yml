@@ -1,25 +1,78 @@
 ---
+root_bri:
+ 15:
+  root: "{{ attr.15.root }}"
+ 16:
+  root: "{{ attr.16.root }}"
+ 17:
+  root: "{{ attr.17.root }}"
+ 18:
+  root: "{{ attr.18.root }}"
+ 55:
+  root: "{{ attr.55.root }}"
+ 56:
+  root: "{{ attr.16.root }}"
+ 57:
+  root: "{{ attr.57.root }}"
+ 58:
+  root: "{{ attr.58.root }}"
+   
 svi_int:
- - vlan11 
- - vlan12 
- - vlan13
- - vlan14 
- - vlan51 
- - vlan52  
- - vlan53  
- - vlan54 
-
-routed_ports:
- - Ethernet1/0
- - Ethernet1/1
- - Ethernet1/2
- 
-hsrp_vip:
- - { vip: 192.168.11.254, hello: 250, dead: 750 }
- - { vip: 192.168.12.254, hello: 250, dead: 750 }
- - { vip: 192.168.13.254, hello: 250, dead: 750 }
- - { vip: 192.168.14.254, hello: 250, dead: 750 }
- - { vip: 192.168.51.254, hello: 250, dead: 750 }
- - { vip: 192.168.52.254, hello: 250, dead: 750 } 
- - { vip: 192.168.53.254, hello: 250, dead: 750 }
- - { vip: 192.168.54.254, hello: 250, dead: 750 }
+ vlan15:
+   ip: "{{ attr.15.ip }}"
+   mask: 255.255.255.0
+   vip: 10.0.15.254
+   priority: "{{ attr.15.hsrp_pri }}"
+ vlan16:
+   ip: "{{ attr.16.ip }}"
+   mask: 255.255.255.0
+   vip: 10.0.15.254
+   priority: "{{ attr.16.hsrp_pri }}"
+ vlan17:
+   ip: "{{ attr.17.ip }}"
+   mask: 255.255.255.0
+   vip: 10.0.15.254
+   priority: "{{ attr.17.hsrp_pri }}"
+ vlan18:
+   ip: "{{ attr.18.ip }}"
+   mask: 255.255.255.0
+   vip: 10.0.15.254
+   priority: "{{ attr.18.hsrp_pri }}"
+ vlan55:
+   ip: "{{ attr.55.ip }}"
+   mask: 255.255.255.0
+   vip: 10.0.15.254
+   priority: "{{ attr.55.hsrp_pri }}"
+ vlan56:
+   ip: "{{ attr.56.ip }}"
+   mask: 255.255.255.0
+   vip: 10.0.15.254
+   priority: "{{ attr.56.hsrp_pri }}"
+ vlan57:
+   ip: "{{ attr.57.ip }}"
+   mask: 255.255.255.0
+   vip: 10.0.15.254
+   priority: "{{ attr.57.hsrp_pri }}"
+ vlan58:
+   ip: "{{ attr.58.ip }}"
+   mask: 255.255.255.0
+   vip: 10.0.15.254
+   priority: "{{ attr.58.hsrp_pri }}"
+   
+ptp_int:
+ e1/0:
+   desc: "{{ attr.e10.desc }}"
+   ip: "{{ attr.e10.ip }}"
+   mask: 255.255.255.252
+ e2/0:
+   desc: "{{ attr.e20.desc }}"
+   ip: "{{ attr.e10.ip }}"
+   mask: 255.255.255.252
+ e1/1:
+   desc: "{{ attr.e11.desc }}"
+   ip: "{{ attr.e11.ip }}"
+   mask: 255.255.255.252
+ e1/2:
+   desc: "{{ attr.e12.desc }}"
+   ip: "{{ attr.e12.ip }}"
+   mask: 255.255.255.252

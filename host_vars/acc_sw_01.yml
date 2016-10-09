@@ -1,10 +1,7 @@
 ---
-vlans_allowed:
- - 11
- - 51
+voice: 15
+data: 55
 
-voice_vlan:
- - 11
-
-data_vlan:
- - 51  
+allowed:
+ - 15
+ - 55

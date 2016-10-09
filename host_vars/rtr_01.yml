@@ -1,4 +1,10 @@
 ---
-interfaces:
-  - { interface: Ethernet0/0, description: --> core_sw_01, ip: 172.16.1.2, mask: 255.255.255.0 }
-  - { interface: Ethernet0/1, description: --> core_sw_02, ip: 172.16.3.2, mask: 255.255.255.0 }
+item:
+ e00:
+   desc: link-to-core_sw_01
+   ip: 10.0.100.6
+ e01:
+   desc: link-to-core_sw_02
+   ip: 10.0.100.18
+ e10:
+   desc: link-to-isp-a

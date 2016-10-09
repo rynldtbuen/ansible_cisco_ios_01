@@ -1,1 +1,14 @@
 ---
+int:
+ e0/0:
+   desc: "{{ attr.e10.desc }}"  
+   ip: "{{ attr.e10.ip }}"  
+   mask: 255.255.255.252
+ e0/1:
+   desc: "{{ attr.e11.desc }}"  
+   ip: "{{ attr.e11.ip }}"  
+   mask: 255.255.255.252
+
+wan_int:
+ e1/0:
+   desc: "{{ attr.e10.desc }}"  

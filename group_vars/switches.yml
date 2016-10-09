@@ -1,21 +1,17 @@
 ---
 vlans:
-  - { vlan_id: 11, name: voice1}  
-  - { vlan_id: 12, name: voice2}
-  - { vlan_id: 13, name: voice3}  
-  - { vlan_id: 14, name: voice4} 
-  - { vlan_id: 51, name: data1}  
-  - { vlan_id: 52, name: data2}
-  - { vlan_id: 53, name: data3}  
-  - { vlan_id: 54, name: data4}
+  - { vlan_id: 15, name: voice15}  
+  - { vlan_id: 16, name: voice16}
+  - { vlan_id: 17, name: voice17}  
+  - { vlan_id: 18, name: voice18}  
+  - { vlan_id: 55, name: data55}
+  - { vlan_id: 56, name: data56}
+  - { vlan_id: 57, name: data57}
+  - { vlan_id: 58, name: data58}  
 
-trunk_ports:
+trunk_range: e0/0 - 3
+trunk_int:
  - Ethernet0/0
  - Ethernet0/1
- - Ethernet0/2
- - Ethernet0/3
-
-access_ports:
- - Ethernet1/0
- - Ethernet1/1
- - Ethernet1/2
+ - Ethernet0/2 
+ - Ethernet0/3 

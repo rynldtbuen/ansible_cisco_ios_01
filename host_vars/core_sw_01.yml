@@ -1,30 +1,47 @@
-svi_add:
-  - { ip: 192.168.11.252, mask: 255.255.255.0 }
-  - { ip: 192.168.12.252, mask: 255.255.255.0 }
-  - { ip: 192.168.13.252, mask: 255.255.255.0 }
-  - { ip: 192.168.14.252, mask: 255.255.255.0 }
-  - { ip: 192.168.51.252, mask: 255.255.255.0 }
-  - { ip: 192.168.52.252, mask: 255.255.255.0 }
-  - { ip: 192.168.53.252, mask: 255.255.255.0 }
-  - { ip: 192.168.54.252, mask: 255.255.255.0 }
-
-routed_ports_add:
-  - { description: --> core_sw_02, ip: 172.16.0.1, mask: 255.255.255.0 }
-  - { description: --> rtr_01, ip: 172.16.1.1, mask: 255.255.255.0 }
-  - { description: --> rtr-02, ip: 172.16.2.1, mask: 255.255.255.0 }
-
-root_bri:
- - { vlan_id: 11, root: primary }
- - { vlan_id: 12, root: primary }
- - { vlan_id: 13, root: primary }
- - { vlan_id: 14, root: primary }
- - { vlan_id: 51, root: secondary }
- - { vlan_id: 52, root: secondary }
- - { vlan_id: 53, root: secondary }
- - { vlan_id: 54, root: secondary }
-
-hsrp_active:
- - { interface: vlan11, pri: 110,}
- - { interface: vlan12, pri: 110 }
- - { interface: vlan13, pri: 110 }
- - { interface: vlan14, pri: 110 }
+---
+attr:
+ 15:
+  ip: 10.0.15.252
+  hsrp_pri: 110
+  root: primary
+ 16:
+  ip: 10.0.16.252
+  hsrp_pri: 110
+  root: primary
+ 17:
+  ip: 10.0.17.252
+  hsrp_pri: 100
+  root: secondary
+ 18:
+  ip: 10.0.18.252
+  hsrp_pri: 100
+  root: secondary
+ 55:
+  ip: 10.0.55.252
+  hsrp_pri: 110
+  root: primary
+ 56:
+  ip: 10.0.56.252
+  hsrp_pri: 110
+  root: primary
+ 57:
+  ip: 10.0.57.252
+  hsrp_pri: 100
+  root: secondary
+ 58:
+  ip: 10.0.58.252
+  hsrp_pri: 100
+  root: secondary
+ e10:
+   desc: link-to-core_sw_02
+   ip: 10.0.100.1
+ e20:
+   desc: link-to-core_sw_02
+   ip: 10.0.100.21
+ e11:
+   desc: link-to-rtr_01
+   ip: 10.0.100.5
+   mask: 255.255.255.252
+ e12:
+   desc: link-to-rtr_02
+   ip: 10.0.100.9

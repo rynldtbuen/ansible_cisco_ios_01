@@ -5,14 +5,14 @@
   connection: local
 
   tasks:
-
-
+########
   - name: set hostname
     ios_config:
       provider: "{{ provider }}"
       lines: hostname "{{ ansible_hostname }}"
     tags: hostname
 
+########
   - name: create vlans
     ios_config:
       provider: "{{ provider }}"
@@ -22,48 +22,41 @@
     with_items: "{{ vlans }}"
     tags: vlans
 
+########
   - name: trunk port
     ios_config:
       provider: "{{ provider }}"
       lines:
       - switchport trunk encap dot1q
       - switchport mode dynamic desirable
-      - switchport trunk allowed vlan add {{ item[1] }}
-      parents: interface {{ item[0] }}
-    with_nested: 
-    - "{{ trunk_ports }}"
-    - "{{ vlans_allowed }}"
+      - switchport trunk allowed vlan none
+      parents: interface range {{ item }}
+    with_items: "{{ trunk_range }}"
     tags: trunk
 
+########
+  - name: trunk vlan allowed
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - switchport trunk allowed vlan add {{ item[1] }}
+      parents: interface range {{ item[0] }}
+    with_nested:
+    - "{{ trunk_range }}"
+    - "{{ allowed }}"
+    tags: allowed
+
+########
   - name: access ports
     ios_config:
       provider: "{{ provider }}"
       lines:
       - switchport mode access 
-      - switchport voice vlan {{ item[0] }}
-      - switchport access vlan {{ item[1] }}
-      parents: interface {{ item[2] }}
-    with_nested:
-    - "{{ voice_vlan }}"
-    - "{{ data_vlan }}"
-    - "{{ access_ports }}"
-    tags: allowed
-
-# up all interface (optional)
-  - name: no shutdown
-    ios_config:
-      provider: "{{ provider }}"
-      lines:
-      - no shutdown
-      parents: interface {{ item }}
-    with_items: "{{ trunk_ports }}"
-    tags: noshut
-
-  - name: no shutdown
-    ios_config:
-      provider: "{{ provider }}"
-      lines:
-      - no shutdown
-      parents: interface {{ item }}
-    with_items: "{{ access_ports }}"
-    tags: noshut
+      - switchport access vlan {{ item[2] }}
+      - switchport voice vlan {{ item[1] }}
+      parents: interface range {{ item[0] }}
+    with_nested: 
+    - "{{ acc_range }}"
+    - "{{ voice }}"
+    - "{{ data }}"
+    tags: access

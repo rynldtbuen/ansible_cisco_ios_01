@@ -3,6 +3,6 @@
   gather_facts: no
   connection: local
  
-- include: core_switches.yml
-- include: access_switches.yml
-- include: routers.yml
+- include: core.yml
+- include: access.yml
+- include: router.yml
