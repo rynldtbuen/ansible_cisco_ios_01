@@ -6,37 +6,47 @@
  
   tasks:
   
-########  
+
   - name: set hostname
     ios_config:
       provider: "{{ provider }}"
-      lines: hostname "{{ ansible_hostname }}"     
+      lines: hostname "{{ ansible_hostname }}"    
 
-########
+
   - name: configure interface
     ios_config:
       provider: "{{ provider }}"
       lines:
-      - description {{ item.value.desc }}
-      - ip add {{ item.value.ip }} {{ item.value.mask }}
+      - description {{ item.desc }}
+      - ip add {{ item.ip }} {{ item.mask }}
       - ip nat inside
       parents: interface {{ item.key }}
-    with_dict: "{{ int }}"
-    tags: int     
+    with_items: "{{ int }}"
+    tags: int   
 
-########
+    
   - name: configure wan interface
     ios_config:
       provider: "{{ provider }}"
       lines:
       - ip add dhcp
       - ip nat outside
-      parents: interface {{ item.key }}
+      parents: interface {{ item.name }}
       match: exact            
-    with_dict: "{{ wan_int }}" 
+    with_items: "{{ wan_int }}" 
     tags: wan
 
-########
+    
+  - name: access list to use in nat
+    ios_config:
+      provider: "{{ provider }}"
+      lines:
+      - permit 10.0.0.0 0.0.63.255 log
+      parents: ip access-list standard NAT
+      match: exact
+    tags: acl
+    
+    
   - name: access list to use in nat
     ios_config:
       provider: "{{ provider }}"
@@ -46,17 +56,18 @@
       match: exact
     tags: acl
 
-########
+
   - name: ip nat and default route
     ios_config:
       provider: "{{ provider }}"
       lines:
-      - ip nat inside source list NAT interface e1/0 overload 
+      - ip nat inside source list NAT interface {{ item.name }}  overload 
       - ip route 0.0.0.0 0.0.0.0 192.168.91.2
-      match: exact            
+      match: exact
+    with_items: "{{ wan_int }}"            
     tags: nat_default
-
-########
+    
+    
   - name: routing
     ios_config:
       provider: "{{ provider }}"
@@ -68,13 +79,12 @@
       parents: router eigrp 1
       match: exact            
     tags: routing
-    
-########
-  - name: passive
+
+  - name: passive interface
     ios_config:
       provider: "{{ provider }}"
       lines:
-      - no passive-interface {{ item.key }}
+      - no passive-interface {{ item.name }}
       parents: router eigrp 1
-    with_dict: "{{ int }}"
+    with_items: "{{ int }}"
     tags: passive

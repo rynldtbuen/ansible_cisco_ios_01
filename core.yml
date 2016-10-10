@@ -12,7 +12,7 @@
       lines: hostname "{{ ansible_hostname }}"
     tags: hostname
 
-########
+
   - name: create vlans
     ios_config:
       provider: "{{ provider }}"
@@ -22,7 +22,7 @@
     with_items: "{{ vlans }}"
     tags: vlans
     
-########
+
   - name: trunk port
     ios_config:
       provider: "{{ provider }}"
@@ -32,53 +32,53 @@
     with_items: "{{ trunk_range }}"
     tags: trunk
     
-########
+
   - name: spanning root brige
     ios_config:
       provider: "{{ provider }}"
       lines:
       - spanning-tree vlan {{ item.key }} root {{ item.value.root }}
-    with_dict: "{{ root_bri }}"
+    with_items: "{{ root_bri }}"
     tags: bridge
 
 
-########
+
   - name: switch virtual interface
     ios_config:
       provider: "{{ provider }}"
       lines:
-      - ip add {{ item.value.ip }} {{ item.value.mask }}
+      - ip address {{ item.ip }} {{ item.mask }}
       - delay 200
-      parents: interface {{ item.key }}
-    with_dict: "{{ svi_int }}"
+      parents: interface {{ item.name }}
+    with_items: "{{ svi_int }}"
     tags: svi
 
-########
-  - name: hsrp configuration
+
+  - name: hsrp
     ios_config:
       provider: "{{ provider }}"
       lines:
-      - standby 1 ip {{ item.value.vip }}
+      - standby 1 ip {{ item.vip }}
       - standby 1 timer msec 250 msec 750
-      - standby 1 priority {{ item.value.priority }}
+      - standby 1 priority {{ item.pri }}
       - standby 1 preempt delay minimum 30
-      parents: interface {{ item.key }}
-    with_dict: "{{ svi_int }}"
+      parents: interface {{ item.name }}
+    with_items: "{{ svi_int }}"
     tags: hsrp
     
-########
+
   - name: point-to-point link
     ios_config:
       provider: "{{ provider }}"
       lines:
       - no switchport
-      - description {{ item.value.desc }}
-      - ip add {{ item.value.ip }} {{ item.value.mask }}
-      parents: interface {{ item.key}}
-    with_dict: "{{ ptp_int }}"
+      - description {{ item.desc }}
+      - ip add {{ item.ip }} {{ item.mask }}
+      parents: interface {{ item.name}}
+    with_items: "{{ ptp_int }}"
     tags: ptp
 
-########
+
   - name: routing configuration
     ios_config:
       provider: "{{ provider }}"
@@ -90,31 +90,32 @@
       match: exact
     tags: routing
     
-########
+
   - name: passive-interface
     ios_config:
       provider: "{{ provider }}"
       lines: 
-      - no passive-interface {{ item.key }} 
+      - no passive-interface {{ item.name }} 
       parents: router eigrp 1
-    with_dict: "{{ svi_int }}"
+    with_items: "{{ svi_int }}"
     tags: passive
+
   - name: passive-interface
     ios_config:
       provider: "{{ provider }}"
       lines: 
-      - no passive-interface {{ item.key }} 
+      - no passive-interface {{ item.name }} 
       parents: router eigrp 1
-    with_dict: "{{ ptp_int }}"
+    with_items: "{{ ptp_int }}"
     tags: passive
     
-########
+
   - name: summary route
     ios_config:
       provider: "{{ provider }}"
       lines:
-      - ip summary-address eigrp 1 10.0.0.0 255.255.224.0   
-      - ip summary-address eigrp 1 10.0.32.0 255.255.224.0   
-      parents: interface {{ item.key }}
-    with_dict: "{{ ptp_int }}"
+      - ip summary-address eigrp 1 10.0.0.0 255.255.224.0
+      - ip summary-address eigrp 1 10.0.32.0 255.255.224.0
+      parents: interface {{ item.name }}
+    with_items: "{{ ptp_int }}"
     tags: summary

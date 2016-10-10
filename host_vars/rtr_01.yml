@@ -1,11 +1,11 @@
 ---
 int:
   - name: "Ethernet0/0"
-    desc: link-to-core_sw_02
+    desc: "link-to-core_sw_02"
     ip: 10.0.100.6
     mask: 255.255.255.252
   - name: "Ethernet0/1"
-    desc: link-to-core_sw_02
+    desc: "link-to-core_sw_02"
     ip: 10.0.100.14
     mask: 255.255.255.0
 
