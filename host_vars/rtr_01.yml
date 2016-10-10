@@ -1,10 +1,14 @@
 ---
-item:
- e00:
-   desc: link-to-core_sw_01
-   ip: 10.0.100.6
- e01:
-   desc: link-to-core_sw_02
-   ip: 10.0.100.18
- e10:
-   desc: link-to-isp-a
+int:
+  - name: "Ethernet0/0"
+    desc: link-to-core_sw_02
+    ip: 10.0.100.6
+    mask: 255.255.255.252
+  - name: "Ethernet0/1"
+    desc: link-to-core_sw_02
+    ip: 10.0.100.14
+    mask: 255.255.255.0
+
+wan_int:
+  - name: "Ethernet1/0"
+    desc: "link-to-isp-a"
