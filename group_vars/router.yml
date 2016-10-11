@@ -2,12 +2,12 @@
 ptp_links:
   - name: "Ethernet0/0"
     desc: "{{ e00.desc }}"  
-    ip: "{{ attr.e10.ip }}"  
+    ip: "{{ e00.ip }}"  
     mask: 255.255.255.252
     
   - name: "Ethernet0/1"
     desc: "{{ e01.desc }}"  
-    ip: "{{ e11.ip }}"  
+    ip: "{{ e01.ip }}"  
     mask: 255.255.255.252
 
 wan_int:

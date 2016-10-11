@@ -24,7 +24,6 @@
     with_items: "{{ vlans }}"
     tags: vlans
     
-
     #
   - name: set trunk port
     ios_config:

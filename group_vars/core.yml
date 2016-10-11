@@ -1,46 +1,58 @@
 ---
 svi_int:
   - name: vlan15
-    ip: "{{ vlan15_ip }}" 
-    mask: 255.255.255.0 
+    ip: "{{ vlan15.ip }}"
+    mask: 255.255.255.0
     vip: 10.0.15.252 
-    pri: "{{ vlan15_pri }}" 
-    
-  - name: vlan16
-    ip: "{{ vlan16_ip }}"
+    pri: "{{ vlan15.pri }}"
+
+  - name: vlan16 
+    ip: "{{ vlan16.ip }}"
     mask: 255.255.255.0
     vip: 10.0.15.252
-    pri: "{{ vlan16_pri }}" 
-    
+    pri: "{{ vlan16.pri }}"
+
   - name: vlan17
-    ip: "{{ vlan17_ip }}"
+    ip: "{{ vlan17.ip }}"
     mask: 255.255.255.0
     vip: 10.0.15.252
-    pri: "{{ vlan17_pri }}
-    
+    pri: "{{ vlan17.pri }}"
+
   - name: vlan18
-    ip: "{{ vlan18_ip }}"
+    ip: "{{ vlan18.ip }}"
     mask: 255.255.255.0
     vip: 10.0.15.252
-    pri: "{{ vlan18_pri }}
+    pri: "{{ vlan18.pri }}"
+
+  - name: vlan55
+    ip: "{{ vlan55.ip }}"
+    mask: 255.255.255.0
+    vip: 10.0.15.252
+    pri: "{{ vlan55.pri }}"
     
   - name: vlan55
-    ip: "{{ vlan55_ip }}"
+    ip: "{{ vlan55.ip }}"
     mask: 255.255.255.0
     vip: 10.0.15.252
-    pri: "{{ vlan55_pri }}
-    
-  - name: vlan55
-    ip: "{{ vlan55_ip }}"
-    mask: 255.255.255.0
-    vip: 10.0.15.252
-    pri: "{{ vlan55_pri }}
-    
+    pri: "{{ vlan55.pri }}"
+
   - name: vlan56
-    ip: "{{ vlan55_ip }}"
+    ip: "{{ vlan56.ip }}"
     mask: 255.255.255.0
     vip: 10.0.15.252
-    pri: "{{ vlan55_pri }}
+    pri: "{{ vlan56.pri }}"
+    
+  - name: vlan57
+    ip: "{{ vlan57.ip }}"
+    mask: 255.255.255.0
+    vip: 10.0.15.252
+    pri: "{{ vlan57.pri }}"
+
+  - name: vlan58
+    ip: "{{ vlan58.ip }}"
+    mask: 255.255.255.0
+    vip: 10.0.15.252
+    pri: "{{ vlan58.pri }}"
     
 ptp_links:
   - name: "Ethernet1/0"
@@ -67,6 +79,7 @@ trunk_ports:
  - range: "Ethernet0/0 - 3"
  
 root_bri:
+  - id: 15
     role: "{{ vlan15.root }}"
   - id: 16
     role: "{{ vlan16.root }}"
