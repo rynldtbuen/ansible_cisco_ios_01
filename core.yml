@@ -4,15 +4,17 @@
   gather_facts: no
   connection: local
 
+
   tasks:
 
+    #
   - name: set hostname
     ios_config:
       provider: "{{ provider }}"
       lines: hostname "{{ ansible_hostname }}"
     tags: hostname
 
-
+    #
   - name: create vlans
     ios_config:
       provider: "{{ provider }}"
@@ -23,26 +25,26 @@
     tags: vlans
     
 
-  - name: trunk port
+    #
+  - name: set trunk port
     ios_config:
       provider: "{{ provider }}"
       lines:
       - switchport trunk encapsulation dot1q
       parents: interface range {{ item }}
-    with_items: "{{ trunk_range }}"
+    with_items: "{{ trunk_ports }}"
     tags: trunk
-    
 
-  - name: spanning root brige
+    #
+  - name: set root brige
     ios_config:
       provider: "{{ provider }}"
       lines:
-      - spanning-tree vlan {{ item.key }} root {{ item.value.root }}
+      - spanning-tree vlan {{ item.id }} root {{ item.role }}
     with_items: "{{ root_bri }}"
-    tags: bridge
+    tags: stp
 
-
-
+    #
   - name: switch virtual interface
     ios_config:
       provider: "{{ provider }}"
@@ -52,8 +54,8 @@
       parents: interface {{ item.name }}
     with_items: "{{ svi_int }}"
     tags: svi
-
-
+    
+    #
   - name: hsrp
     ios_config:
       provider: "{{ provider }}"
@@ -66,7 +68,7 @@
     with_items: "{{ svi_int }}"
     tags: hsrp
     
-
+    #   
   - name: point-to-point link
     ios_config:
       provider: "{{ provider }}"
@@ -78,8 +80,8 @@
     with_items: "{{ ptp_int }}"
     tags: ptp
 
-
-  - name: routing configuration
+    #
+  - name: eigrp
     ios_config:
       provider: "{{ provider }}"
       lines:
@@ -88,9 +90,9 @@
       - passive-interface default
       parents: router eigrp 1
       match: exact
-    tags: routing
-    
+    tags: eigrp
 
+    #
   - name: passive-interface
     ios_config:
       provider: "{{ provider }}"
@@ -99,7 +101,6 @@
       parents: router eigrp 1
     with_items: "{{ svi_int }}"
     tags: passive
-
   - name: passive-interface
     ios_config:
       provider: "{{ provider }}"
@@ -110,6 +111,7 @@
     tags: passive
     
 
+    #
   - name: summary route
     ios_config:
       provider: "{{ provider }}"

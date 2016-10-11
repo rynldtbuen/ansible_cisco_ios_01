@@ -1,7 +1,11 @@
 ---
-acc_range: e1/0 - 3
-acc_int:
- - Ethernet1/0
- - Ethernet1/1
- - Ethernet1/2
- - Ethernet1/3
+acc_ports:
+  - range: "Ethernet1/0 - 3"
+    voice: "{{ voice_vlan_01 }}"
+    data: "{{ data_vlan_01 }}"
+
+trunk_ports:
+ - range: "Ethernet0/0 - 3"
+   allowed:
+   - "{{ voice_vlan_01 }}"
+   - "{{ data_vlan_01 }}"

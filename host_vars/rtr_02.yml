@@ -1,12 +1,11 @@
 ---
-int:
-  - name: "Ethernet0/0"
-    desc: "link-to-core_sw_01"
-    ip: 10.0.100.10 
-  - name: "Ethernet0/1"
-    desc: "link-to-core_sw_02"
-    ip: 10.0.100.18
+e00:
+    desc: "link-to-core_sw_01 e1/2"
+    ip: 10.0.100.14
 
-wan_int:
-  - name: "Ethernet1/0"
+e01:
+    desc: "link-to-core_sw_02 e1/2"
+    ip: 10.0.100.22
+
+e10:
     desc: "link-to-isp-b"

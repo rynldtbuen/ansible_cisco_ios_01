@@ -1,14 +1,15 @@
 ---
-int:
- e0/0:
-   desc: "{{ attr.e10.desc }}"  
-   ip: "{{ attr.e10.ip }}"  
-   mask: 255.255.255.252
- e0/1:
-   desc: "{{ attr.e11.desc }}"  
-   ip: "{{ attr.e11.ip }}"  
-   mask: 255.255.255.252
+ptp_links:
+  - name: "Ethernet0/0"
+    desc: "{{ e00.desc }}"  
+    ip: "{{ attr.e10.ip }}"  
+    mask: 255.255.255.252
+    
+  - name: "Ethernet0/1"
+    desc: "{{ e01.desc }}"  
+    ip: "{{ e11.ip }}"  
+    mask: 255.255.255.252
 
 wan_int:
- e1/0:
-   desc: "{{ attr.e10.desc }}"  
+  - name: "Ethernet1/0"
+    desc: "{{ e10.desc }}"  

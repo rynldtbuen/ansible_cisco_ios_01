@@ -1,7 +1,3 @@
 ---
-voice: 15
-data: 55
-
-allowed:
- - 15
- - 55
+voice_vlan_01: 15
+data_vlan_01: 55

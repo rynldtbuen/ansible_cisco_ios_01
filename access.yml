@@ -5,14 +5,15 @@
   connection: local
 
   tasks:
-########
+    
+    #
   - name: set hostname
     ios_config:
       provider: "{{ provider }}"
       lines: hostname "{{ ansible_hostname }}"
     tags: hostname
 
-########
+    # 
   - name: create vlans
     ios_config:
       provider: "{{ provider }}"
@@ -22,41 +23,38 @@
     with_items: "{{ vlans }}"
     tags: vlans
 
-########
-  - name: trunk port
+    # 
+  - name: set trunk port
     ios_config:
       provider: "{{ provider }}"
       lines:
       - switchport trunk encap dot1q
       - switchport mode dynamic desirable
       - switchport trunk allowed vlan none
-      parents: interface range {{ item }}
-    with_items: "{{ trunk_range }}"
+      parents: interface range {{ item.range }}
+    with_items: "{{ trunk_ports }}"
     tags: trunk
 
-########
+    #
   - name: trunk vlan allowed
     ios_config:
       provider: "{{ provider }}"
       lines:
-      - switchport trunk allowed vlan add {{ item[1] }}
-      parents: interface range {{ item[0] }}
-    with_nested:
-    - "{{ trunk_range }}"
-    - "{{ allowed }}"
-    tags: allowed
+      - switchport trunk allowed vlan add {{ item.1 }}
+      parents: interface range {{ item.0.range }}
+    with_subelements:
+    - "{{ trunk_ports }}"
+    - allowed
+    tags: trunk1
 
-########
+    # 
   - name: access ports
     ios_config:
       provider: "{{ provider }}"
       lines:
       - switchport mode access 
-      - switchport access vlan {{ item[2] }}
-      - switchport voice vlan {{ item[1] }}
-      parents: interface range {{ item[0] }}
-    with_nested: 
-    - "{{ acc_range }}"
-    - "{{ voice }}"
-    - "{{ data }}"
+      - switchport access vlan {{ item.data }}
+      - switchport voice vlan {{ item.voice }}
+      parents: interface range {{ item.range }}
+    with_items: "{{ acc_ports }}"  
     tags: access

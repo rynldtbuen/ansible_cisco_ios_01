@@ -9,9 +9,8 @@ vlans:
   - { vlan_id: 57, name: data57}
   - { vlan_id: 58, name: data58}  
 
-trunk_range: e0/0 - 3
-trunk_int:
- - Ethernet0/0
- - Ethernet0/1
- - Ethernet0/2 
- - Ethernet0/3 
+trunk_ports:
+ - range: "Ethernet0/0 - 3"
+   allowed:
+    - "{{ voice_vlan_01 }}"
+    - "{{ data_vlan_01 }}"
