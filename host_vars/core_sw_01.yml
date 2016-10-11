@@ -1,47 +1,56 @@
 ---
-attr:
- 15:
-  ip: 10.0.15.252
-  hsrp_pri: 110
-  root: primary
- 16:
-  ip: 10.0.16.252
-  hsrp_pri: 110
-  root: primary
- 17:
-  ip: 10.0.17.252
-  hsrp_pri: 100
-  root: secondary
- 18:
-  ip: 10.0.18.252
-  hsrp_pri: 100
-  root: secondary
- 55:
-  ip: 10.0.55.252
-  hsrp_pri: 110
-  root: primary
- 56:
-  ip: 10.0.56.252
-  hsrp_pri: 110
-  root: primary
- 57:
-  ip: 10.0.57.252
-  hsrp_pri: 100
-  root: secondary
- 58:
-  ip: 10.0.58.252
-  hsrp_pri: 100
-  root: secondary
- e10:
-   desc: link-to-core_sw_02
+vlan15:
+   ip: 10.0.15.252 
+   pri: 110
+   root: primary
+
+vlan16:
+   ip: 10.0.16.252 
+   pri: 110
+   root: primary
+
+vlan17:
+   ip: 10.0.17.252 
+   pri: 90
+   root: secondary
+
+vlan18:
+   ip: 10.0.18.252 
+   pri: 90
+   root: secondary
+
+vlan55:
+   ip: 10.0.55.252 
+   pri: 110
+   root: primary
+
+vlan56:
+   ip: 10.0.56.252 
+   pri: 110
+   root: primary
+   
+vlan57: 
+   ip: 10.0.57.252 
+   pri: 90
+   root: secondary
+
+vlan58:
+   ip: 10.0.58.252
+   pri: 90
+   root: secondary
+   
+e10:
+   desc: "link-to core_sw_02 e1/0"
    ip: 10.0.100.1
- e20:
-   desc: link-to-core_sw_02
-   ip: 10.0.100.21
- e11:
-   desc: link-to-rtr_01
-   ip: 10.0.100.5
-   mask: 255.255.255.252
- e12:
-   desc: link-to-rtr_02
+
+e11:
+   desc: "link-to rtr_01 e0/0"
    ip: 10.0.100.9
+
+e12:
+   desc: "link-to rtr_02 e0/0"
+   ip : 10.0.100.13
+
+e20:
+   desc: "link-to core_sw_02 e2/0"
+   ip: 10.0.100.5
