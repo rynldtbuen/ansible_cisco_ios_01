@@ -39,18 +39,18 @@ vlan58:
    pri: 110
    root: primary
    
-e10:
-   desc: "link-to core_sw_01 e1/0"
+e20:
+   desc: "core_sw_01 (e2/0)" 
    ip: 10.0.100.2
 
-e11:
-   desc: "link-to rtr_01 e0/1"
-   ip: 10.0.100.17
-
-e12:
-   desc: "link-to rtr_02 e0/1"
-   ip : 10.0.100.21
-
-e20:
-   desc: "link-to core_sw_01 e2/0"
+e21:
+   desc: "core_sw_01 (e2/1)"
    ip: 10.0.100.6
+
+e22:
+   desc: "rtr_01 (e0/1)"
+   ip : 10.0.100.17
+   
+e23:
+   desc: "rtr_02 (e0/1)"
+   ip: 10.0.100.21

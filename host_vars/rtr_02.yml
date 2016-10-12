@@ -1,10 +1,10 @@
 ---
 e00:
-    desc: "link-to-core_sw_01 e1/2"
+    desc: "core_sw_01 (e2/3)"
     ip: 10.0.100.14
 
 e01:
-    desc: "link-to-core_sw_02 e1/2"
+    desc: "core_sw_02 (e2/3)"
     ip: 10.0.100.22
 
 e10:

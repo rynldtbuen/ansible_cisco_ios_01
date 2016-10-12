@@ -5,7 +5,7 @@ acc_ports:
     data: "{{ data_vlan_01 }}"
 
 trunk_ports:
- - range: "Ethernet0/0 - 3"
+ - range: "Ethernet0/0 - 1"
    allowed:
    - "{{ voice_vlan_01 }}"
    - "{{ data_vlan_01 }}"

@@ -64,6 +64,7 @@
       - standby 1 priority {{ item.pri }}
       - standby 1 preempt delay minimum 30
       parents: interface {{ item.name }}
+      match: exact
     with_items: "{{ svi_int }}"
     tags: hsrp
     
@@ -98,6 +99,7 @@
       lines: 
       - no passive-interface {{ item.name }} 
       parents: router eigrp 1
+      match: exact
     with_items: "{{ svi_int }}"
     tags: passive
   - name: passive-interface
@@ -106,6 +108,7 @@
       lines: 
       - no passive-interface {{ item.name }} 
       parents: router eigrp 1
+      match: exact
     with_items: "{{ ptp_int }}"
     tags: passive
     
@@ -118,5 +121,6 @@
       - ip summary-address eigrp 1 10.0.0.0 255.255.224.0
       - ip summary-address eigrp 1 10.0.32.0 255.255.224.0
       parents: interface {{ item.name }}
+      match: exact
     with_items: "{{ ptp_int }}"
     tags: summary
