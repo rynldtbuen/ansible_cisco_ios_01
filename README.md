@@ -1,4 +1,4 @@
-# cisco_ios_ansible
+# ansible_cisco_ios-v2
 old-repo,
 simple playbook to automate Cisco IOS configuration ( ios_config, ios_command )
 for playbook using role refer to my other repo https://github.com/rynldtbuen/cisco-ios-ansible
